@@ -21,5 +21,6 @@
 
   "js/ts.implicitProjectConfig.checkJs": true,
 
-  "typescript.preferences.quoteStyle": "single",
+	"typescript.preferences.quoteStyle": "single",
+	"nuxt.isNuxtApp": false,
 }
