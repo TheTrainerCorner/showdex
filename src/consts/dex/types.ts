@@ -28,6 +28,7 @@ export const PokemonTypes: Showdown.TypeName[] = [
   'Steel',
   'Fairy',
   'Stellar',
+	'Cosmic',
   '???',
 ];
 
@@ -65,4 +66,5 @@ export const PokemonTypeLabels: Record<Exclude<Showdown.TypeName, '???'>, [full:
   Steel: ['STEEL', 'STL', 'STL'],
   Fairy: ['FAIRY', 'FARY', 'FRY'],
   Stellar: ['STELLR', 'STLR', 'SLR'],
+	Cosmic: ['COSMIC', 'COSM', 'CSC'],
 };

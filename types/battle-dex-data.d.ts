@@ -62,6 +62,7 @@ declare namespace Showdown {
     | 'Dark'
     | 'Fairy'
     | 'Stellar'
+		| 'Cosmic'
     | '???';
 
   type GenderName = 'M' | 'F' | 'N';
