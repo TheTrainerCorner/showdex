@@ -1,7 +1,7 @@
 import { type GenerationNum } from '@smogon/calc';
-import type * as I from '@smogon/calc/src/data/interface';
+import type * as I from '@smogon/calc/data/interface';
 // import { Types } from '@smogon/calc/dist/data/types';
-import {toID, extend} from '@smogon/calc/src/util';
+import {toID, extend} from '@smogon/calc/util';
 
 export type TypeChart = {
 	[type in I.TypeName]?: {[type in I.TypeName]?: number};
