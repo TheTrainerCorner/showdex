@@ -1,5 +1,5 @@
 import { type GenerationNum } from '@smogon/calc';
-import type * as I from '@smogon/calc/src/interface';
+import type * as I from '@smogon/calc/src/data/interface';
 // import { Types } from '@smogon/calc/dist/data/types';
 import {toID, extend} from '@smogon/calc/src/util';
 
