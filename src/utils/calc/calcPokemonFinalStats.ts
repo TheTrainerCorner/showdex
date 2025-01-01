@@ -239,6 +239,11 @@ export const calcPokemonFinalStats = (
       record.apply('spd', 1.5, 'items', 'Assault Vest');
     }
 
+    // 50% DEF boost if "Bubbled Dome" is held
+    if (item === 'bubbleddome') {
+      record.apply('def', 1.5, 'items', 'Bubbled Dome');
+    }
+
     // 100% DEF boost if "Fur Coat" is held
     if (item === 'furcoat') {
       record.apply('def', 2, 'items', 'Fur Coat');
