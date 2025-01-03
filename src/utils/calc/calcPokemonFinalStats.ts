@@ -139,6 +139,11 @@ export const calcPokemonFinalStats = (
     if (!legacy && ability === 'quickfeet') {
       record.apply('spe', 1.5, 'abilities', 'Quick Feet');
     }
+
+    // 1.5x SPE boost w/ Poison/Toxic due to "Pastel Veil"
+    if (ability === 'pastelveil' && (status === 'psn' || status === 'tox')) { // TTC Change
+      record.apply('spe', 1.5, 'abilities', 'Pastel Veil');
+    }
   }
 
   // update (2023/07/27): jk, apparently screens in legacy gens boost stats, not incoming damage!
@@ -169,6 +174,22 @@ export const calcPokemonFinalStats = (
     record.cap(999);
 
     return record.export();
+  }
+
+  // 1.3x ATK & SPA from Frigid Inspiration based on forme
+  if (species.baseForme === 'Meloetta' && ability === 'frigidinspiration') { // TTC Change
+    if (species.forme === 'Caroler') record.apply('spa', 1.3, 'abilities', 'Frigid Inspiration');
+    else if (species.forme === 'Aurora') record.apply('atk', 1.3, 'abilities', 'Frigid Inspiration');
+  }
+
+  // 1.5x SPE for items that are ball shape and has Ball Fetch
+  if (ability === 'ballfetch') { // TTC Change
+    const _item = dex.items.get(item);
+
+    // @ts-ignore
+    if (_item.tags.includes('Ball') || item.isPokeball || item.megaStone || item.name === 'Frostorb') {
+      record.apply('spe', 1.5, 'abilities', 'Ball Fetch');
+    }
   }
 
   // apply gen 2-compatible item effects
@@ -240,8 +261,14 @@ export const calcPokemonFinalStats = (
     }
 
     // 50% DEF boost if "Bubbled Dome" is held
-    if (item === 'bubbleddome') {
+    if (item === 'bubbleddome') { // TTC Change
       record.apply('def', 1.5, 'items', 'Bubbled Dome');
+    }
+
+    // 1.2x DEF & SPD boost if "Armor Plate" is held
+    if (item === 'armorplate') { // TTC Change
+      record.apply('def', 1.2, 'items', 'Armor Plate');
+      record.apply('spd', 1.2, 'items', 'Armor Plate');
     }
 
     // 100% DEF boost if "Fur Coat" is held
@@ -288,6 +315,24 @@ export const calcPokemonFinalStats = (
   // 100% DEF boost if ability is "Fur Coat"
   if (ability === 'furcoat') {
     record.apply('def', 2, 'abilities', dex.abilities.get(ability)?.name || ability);
+  }
+
+  // + 10% ATK & SPA modifier if ability is "Emperor's Command"
+  if (ability === 'emperorscommand') { // TTC Change
+    record.apply('atk', 1.1, 'abilities', "Emperor's Command");
+    record.apply('spa', 1.1, 'abilities', "Emperor's Command");
+  }
+
+  // 1.3x ATK & SPA modifier if ability is "Pallesthesia"
+  if (ability === 'pallesthesia') { // TTC Change
+    record.apply('atk', 1.3, 'abilities', 'Pallesthesia');
+    record.apply('spa', 1.3, 'abilities', 'Pallesthesia');
+  }
+
+  // 1.2x DEF & SPD modifier if ability is "Shell Armor"
+  if (ability === 'shellarmor') { // TTC Change
+    record.apply('def', 1.2, 'abilities', 'Shell Armor');
+    record.apply('spd', 1.2, 'abilities', 'Shell Armor');
   }
 
   // apply "Ruin" ability effects that'll ruin me (gen 9)
@@ -346,6 +391,12 @@ export const calcPokemonFinalStats = (
       if (ability === 'sandrush') {
         record.apply('spe', 2, 'abilities', 'Sand Rush');
       }
+
+      // 1.2x DEF & SPD modifier if ability is "Overcoat" w/ darude sandstorm
+      if (ability === 'overcoat') { // TTC Change
+        record.apply('def', 1.2, 'abilities', 'Overcoat');
+        record.apply('spd', 1.2, 'abilities', 'Overcoat');
+      }
     }
 
     // 2x SPE modifier if ability is "Slush Rush" w/ hail/snow
@@ -362,6 +413,7 @@ export const calcPokemonFinalStats = (
       if (['sun', 'harshsunshine'].includes(weather)) {
         // 50% SPA boost if ability is "Solar Power", sunny/desolate, and Pokemon is NOT holding "Utility Umbrella"
         if (ability === 'solarpower') {
+          record.apply('atk', 1.5, 'abilities', 'Solar Power'); // TTC Change
           record.apply('spa', 1.5, 'abilities', 'Solar Power');
         }
 
@@ -380,8 +432,13 @@ export const calcPokemonFinalStats = (
          * @see https://github.com/smogon/pokemon-showdown-client/blob/master/src/battle-tooltips.ts#L1098-L1109
          */
         // 50% ATK/SPD boost if ability is "Flower Gift" and sunny/desolate
+        // if (ability === 'flowergift' && (gen <= 4 || baseForme === 'cherrim')) {
+        //   record.apply('atk', 1.5, 'abilities', 'Flower Gift');
+        // }
         if (ability === 'flowergift' && (gen <= 4 || baseForme === 'cherrim')) {
           record.apply('atk', 1.5, 'abilities', 'Flower Gift');
+          record.apply('spa', 1.5, 'abilities', 'Flower Gift');
+          record.apply('spe', 1.5, 'abilities', 'Flower Gift');
         }
       }
     }
@@ -390,13 +447,33 @@ export const calcPokemonFinalStats = (
     if (['rain', 'heavyrain'].includes(weather) && ability === 'swiftswim') {
       record.apply('spe', 2, 'abilities', 'Swift Swim');
     }
+
+    // 1.3x ATK & SPA if ability is "Rain Dish" and rain/primordial
+    if (['rain', 'heavyrain'].includes(weather) && ability === 'raindish') { // TTC Change
+      record.apply('atk', 1.3, 'abilities', 'Rain Dish');
+      record.apply('spa', 1.3, 'abilities', 'Rain Dish');
+    }
+
+    // 1.5x SPD modifier if ability is "Water Veil" and rain/primordial
+    if (['rain', 'heavyrain'].includes(weather) && ability === 'waterveil') {
+      record.apply('spd', 1.5, 'abilities', 'Water Veil');
+    }
   }
 
   // 50% ATK/SPA reduction if ability is "Defeatist" and HP is 50% or less
   // yoo when tf did they make me into an ability lmaooo
-  if (ability === 'defeatist' && hpPercentage <= 0.5) {
+  // if (ability === 'defeatist' && hpPercentage <= 0.5) {
+  //   record.apply('atk', 0.5, 'abilities', 'Defeatist');
+  //   record.apply('spa', 0.5, 'abilities', 'Defeatist');
+  // }
+  if (ability === 'defeatist' && hpPercentage <= 0.25) { // TTC Change
     record.apply('atk', 0.5, 'abilities', 'Defeatist');
     record.apply('spa', 0.5, 'abilities', 'Defeatist');
+  }
+
+  // 2x SPE modifier if ability is "Receiver" and is at 50% HP or less.
+  if (ability === 'receiver' && hpPercentage <= 0.5) { // TTC Change
+    record.apply('spe', 2, 'abilities', 'Receiver');
   }
 
   // apply additional status effects
@@ -421,20 +498,34 @@ export const calcPokemonFinalStats = (
   const terrain = id(field.dirtyTerrain ?? (field.autoTerrain || field.terrain));
 
   // 50% DEF boost if ability is "Grass Pelt" w/ terrain of the grassy nature
-  if (ability === 'grasspelt' && terrain === 'grassy') {
-    record.apply('def', 1.5, 'abilities', 'Grass Pelt');
+  // if (ability === 'grasspelt' && terrain === 'grassy') {
+  //   record.apply('def', 1.5, 'abilities', 'Grass Pelt');
+  // }
+  if (ability === 'grasspelt') { // TTC Change
+    if (terrain === 'grassy') {
+      record.apply('def', 1.5, 'abilities', 'Grass Pelt');
+      record.apply('spd', 1.5, 'abilities', 'Grass Pelt');
+    } else {
+      record.apply('def', 1.25, 'abilities', 'Grass Pelt');
+      record.apply('spd', 1.25, 'abilities', 'Grass Pelt');
+    }
   }
 
   if (terrain === 'electric') {
     // 2x SPE modifier if ability is "Surge Surfer" w/ electric terrain
-    if (ability === 'surgesurfer') {
-      record.apply('spe', 2, 'abilities', 'Surge Surfer');
-    }
+    // if (ability === 'surgesurfer') {
+    //   record.apply('spe', 2, 'abilities', 'Surge Surfer');
+    // }
 
     // 30% SPA boost if ability is "Hadron Engine" w/ electric terrain
     if (ability === 'hadronengine') {
       record.apply('spa', 1.3, 'abilities', 'Hadron Engine');
     }
+  }
+
+  if (ability === 'surgesurfer') { // TTC Change
+    if (terrain === 'electric') record.apply('spe', 2, 'abilities', 'Surge Surfer');
+    else if (terrain == 'grassy' || terrain === 'psychic' || terrain === 'misty') record.apply('spe', 1.3, 'abilities', 'Surge Surfer');
   }
 
   // apply player side conditions
@@ -467,13 +558,18 @@ export const calcPokemonFinalStats = (
   if (pokemon.abilityToggled) {
     // 50% ATK/SPE reduction if ability is "Slow Start"
     if (ability === 'slowstart') {
-      record.apply('atk', 0.5, 'abilities', 'Slow Start');
+      // record.apply('atk', 0.5, 'abilities', 'Slow Start'); // TTC Change
       record.apply('spe', 0.5, 'abilities', 'Slow Start');
     }
 
     // 2x SPE modifier if ability is "Unburden" and item was removed
     if (ability === 'unburden') {
       record.apply('spe', 2, 'abilities', 'Unburden');
+    }
+
+    // 1.2x ATK modifier if ability is "Sharpened Leek".
+    if (ability === "sharpenedleek") { // TTC Change
+      record.apply('atk', 1.1, 'abilities', 'Sharpened Leek');
     }
 
     /**

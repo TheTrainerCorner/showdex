@@ -179,7 +179,8 @@ export const calcMoveBasePower = (
       && !PokemonDenormalizedMoves.includes(move);
 
     if (shouldBoostNormalize) {
-      basePowerMods.push(1.2);
+      // basePowerMods.push(1.2);
+      basePowerMods.push(1.5); // TTC Change
     }
   }
 
@@ -226,6 +227,10 @@ export const calcMoveBasePower = (
 
   if ((['Electromorphosis', 'Wind Power'] as AbilityName[]).includes(ability) && 'charge' in (volatiles || {}) && moveType === 'Electric') {
     basePowerMods.push(2);
+  }
+
+  if (ability === 'Versatility') { // TTC Change
+    basePowerMods.push(1.3);
   }
 
   // update (2024/07/28): disabling this to let the calc handle it cause it figgity fricks w/ Black Glasses
