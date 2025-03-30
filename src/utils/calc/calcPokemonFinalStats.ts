@@ -184,13 +184,10 @@ export const calcPokemonFinalStats = (
 
   // 1.5x SPE for items that are ball shape and has Ball Fetch
   if (ability === 'ballfetch') { // TTC Change
-    // const _item = dex.items.get(item);
-    // // @ts-ignore
-    // if (_item.tags.includes('Ball') || item.isPokeball || item.megaStone || item.name === 'Frostorb') {
-    //   record.apply('spe', 1.5, 'abilities', 'Ball Fetch');
-    // }
-    // TODO: need to fix this to check if item is a ball shaped item.
-    record.apply('spe', 1.5, 'abilities', 'Ball Fetch');
+		const _item = dex.items.get(item);
+		let ballShapedItems = ["lifeorb", "wikiberry", "adrenalineorb", "flameorb", "liechiberry", "snowball", "toxicorb", "yacheberry", "aspearberry", "destinyknot", "ironball", "oranberry", "ovalstone", "frostorb"];
+		if (ballShapedItems.includes(item) || _item.isPokeball || _item.megaStone)
+    	record.apply('spe', 1.5, 'abilities', 'Ball Fetch');
   }
 
   // apply gen 2-compatible item effects
