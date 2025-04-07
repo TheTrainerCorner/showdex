@@ -321,12 +321,6 @@ export const calcPokemonFinalStats = (
     record.apply('spa', 1.1, 'abilities', "Emperor's Command");
   }
 
-  // 1.3x ATK & SPA modifier if ability is "Pallesthesia"
-  if (ability === 'pallesthesia') { // TTC Change
-    record.apply('atk', 1.3, 'abilities', 'Pallesthesia');
-    record.apply('spa', 1.3, 'abilities', 'Pallesthesia');
-  }
-
   // 1.2x DEF & SPD modifier if ability is "Shell Armor"
   if (ability === 'shellarmor') { // TTC Change
     record.apply('def', 1.2, 'abilities', 'Shell Armor');
